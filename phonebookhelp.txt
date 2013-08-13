@@ -1,0 +1,19 @@
+The PhoneBook has de following structure:
+
+<PhoneBook>                         // root
+    <Id>                            // this is the key value
+        <Name>                      // full name
+        <Phone(s)>                    // Up to 3 phones per Id. 
+             <Phone1>
+                  <PhoneType>         // landline or cellphone
+                  <PhoneNumber>       // Always 9 digits. 
+	       			      // Cellphones starts with 6/7 and 
+				      // Landlinesstarts with 8/9
+             <Phone2>
+                 <PhoneType>
+                 <PhoneNumber>                
+             <Phone3>
+                 <PhoneType>
+                 <PhoneNumber>                
+         <Address>                    // Just one address is allowed
+         <AverageSalary>            // Why not? Just one Salary allowed
