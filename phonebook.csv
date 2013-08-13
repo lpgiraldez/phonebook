@@ -1,0 +1,6 @@
+Id,Name,PhoneType,PhoneNumber,Address,AverageSalary
+1001,luis,cellphone,600666666,loureza,25000
+1001,luis,cellphone,700777777,loureza,25000
+1002,paco,cellphone,600555777,burgueira,30000
+1002,paco,landline,800555333,burgueira,30000
+1003,adrian,landline,900333444,vigo,15000
