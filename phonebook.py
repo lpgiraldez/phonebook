@@ -1,13 +1,14 @@
 # PhoneBook
-# Python  2.7.5
-# Windows 7
+# Developed with Python  2.7.5
+# Tested with Windows 7
 
 import csv
 
 phoneBookDictionary = {}
 helpFile = "phonebookhelp.txt"
 phoneBookRoot = "phonebook.csv"
-phoneBookRoot_tmp = "phonebook_tmp.csv"
+#phoneBookRoot_tmp = "phonebook_tmp.csv"
+headers = []
 
 def phoneBookHelp():
 
@@ -35,11 +36,11 @@ def showMainMenu():
     print "Option 1. Search PhoneBook"
     print "Option 2. Add new Entry"
     print "Option 3. Delete Entry"
-    print "Option 4. Show PhoneBook"
-    print "Option 5. PhoneBook Help"
-    print "Option 6. Read PhoneBook from file"
-    print "Option 7. Save PhoneBook to file"
-    print "Option 8. Exit"
+    print "Option 4. Show PhoneBook"    
+    print "Option 5. Read PhoneBook from file"
+    print "Option 6. Save PhoneBook to file"
+    print "Option 7. PhoneBook Help"    
+    print "Option 8. Exit"    
 
     option = raw_input("Enter an Option [1-7] -> ")
     
@@ -51,13 +52,12 @@ def showMainMenu():
         deleteEntry()
     elif option == "4":
         showPhoneBook()
-    elif option == "5":
-        phoneBookHelp()
-    elif option == "6":
-        readFromFile()
     elif option == "7":
-        print "Working on it...Sorry."
-        #saveToFile()
+        phoneBookHelp()
+    elif option == "5":
+        readFromFile()
+    elif option == "6":
+        saveToFile()
     elif option == "8":
         exitPhoneBook()         
         
@@ -76,8 +76,10 @@ def readFromFile():
     with open(phoneBookRoot, "r") as csvfile:
         reader = csv.reader(csvfile, delimiter = ',')
 
-        # avoid names info
-        reader.next() 
+        # avoid headers info
+        h = reader.next()
+        for n in h:
+            headers.append(n)
 
         # create a auxiliar list with the phonebook data
         phoneBookList_aux = []
@@ -125,7 +127,7 @@ def readFromFile():
         # phoneBookList_aux is no longer needed
         del phoneBookList_aux
         
-        # transform  phoneBookList in a Dictionary
+        # transform  phoneBookList into a Dictionary
         
         for row in phoneBookList:
             phoneBookDictionary[row[0]] = row[1:]
@@ -134,6 +136,7 @@ def readFromFile():
         del phoneBookList
         
         print "\n-->> "+phoneBookRoot + " has been readed.\n"
+    
         
 
     # back to menu
@@ -268,7 +271,7 @@ def searchPhoneBook():
 
 def saveToFile():
     """
-    Search an Entry into phoneBookDictionary
+    Save phoneBookDictionary into a file
     """    
 
     print "\n############################"
@@ -278,13 +281,42 @@ def saveToFile():
     # Checking if phoneBook was already readed from file
     if phoneBookDictionary == {}:
         print "\n-->> Before save to file you need to read a PhoneBook, with option 6 of main menu.\n"
-    else:
-        with open(phoneBookRoot_tmp, 'wb') as f:
-            writer = csv.writer(f)
-            writer.writerows(phoneBookDictionary)
-        print "\n-->> File "+phoneBookRoot_tmp+" updated\n"
+    elif areyousure():
+
+        # Writing phoneBook to file
+        with open(phoneBookRoot, 'wb') as csvfile:
+            writer = csv.writer(csvfile)
+
+            # Writing headers            
+            writer.writerow(headers)            
+
+            # Writing each row 
+            for row in phoneBookDictionary:
+                element = phoneBookDictionary[row]
+                i = 0
+                for n in element[1]:
+                    writer.writerow([row,element[0],element[1][i],element[2][i],element[3],element[4]])
+                    i+=1
+
+            print "\n-->> File "+phoneBookRoot+" updated\n"
         
     showMainMenu()
+
+def areyousure():
+    """
+    Ask for confirmation of overriding de phonebook csv file
+    """
+
+    answer = 'xxx'
+    while answer != 'n' and answer != 'y':
+        answer = raw_input("\n-->> You are about to override the "+phoneBookRoot+" file, are you sure? (y/n) -> \n").lower()
+
+    if answer == 'n':
+        return False
+    elif answer == 'y':
+        return True
+    else:
+        print "\n-->> Something went wrong\n"
     
 def exitPhoneBook():
     raise SystemExit
